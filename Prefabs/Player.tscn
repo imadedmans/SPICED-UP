@@ -1,0 +1,247 @@
+[gd_scene load_steps=18 format=3 uid="uid://7mh18nnifd0l"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_xnles"]
+[ext_resource type="PackedScene" uid="uid://mtj675cc7mji" path="res://Prefabs/PlayerBullet.tscn" id="2_68fdh"]
+[ext_resource type="Texture2D" uid="uid://dlnio4b2ohlfy" path="res://Sprites/PlayerSprites/PlayerIdle.png" id="2_qeeh2"]
+[ext_resource type="Script" path="res://Scripts/AllProjectiles/main/projectile_caller_2d.gd" id="3_ldfkr"]
+[ext_resource type="Script" path="res://Scripts/TrailEffect.gd" id="4_o4trc"]
+[ext_resource type="Script" path="res://Scripts/AllProjectiles/resources/projectile_blueprint_2d.gd" id="4_ugtmn"]
+[ext_resource type="Resource" uid="uid://bxhratcbm5p2k" path="res://Resources/PlayerBullet.tres" id="5_ch7na"]
+[ext_resource type="AudioStream" uid="uid://byyub0sb8nxrs" path="res://SFX/PlayerJump.wav" id="5_takbn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s4swe"]
+size = Vector2(48, 54)
+
+[sub_resource type="Animation" id="Animation_6leg3"]
+resource_name = "PlayerDash"
+length = 0.6
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 3.14159, 6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_lu7ja"]
+resource_name = "PlayerDeath"
+
+[sub_resource type="Animation" id="Animation_ugwql"]
+resource_name = "PlayerHurt"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_088fv"]
+resource_name = "PlayerInvin"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_rkdl4"]
+resource_name = "PlayerJump"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_7a5b0"]
+resource_name = "PlayerIdle"
+length = 0.15
+loop_mode = 2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_w0gm8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ljnb1"]
+_data = {
+"PlayerDash": SubResource("Animation_6leg3"),
+"PlayerDeath": SubResource("Animation_lu7ja"),
+"PlayerHurt": SubResource("Animation_ugwql"),
+"PlayerInvin": SubResource("Animation_088fv"),
+"PlayerJump": SubResource("Animation_rkdl4"),
+"PlayerRun": SubResource("Animation_7a5b0"),
+"RESET": SubResource("Animation_w0gm8")
+}
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 5
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 2
+up_direction = Vector2(3.84778e-12, -1)
+script = ExtResource("1_xnles")
+speed = 400.0
+bulletPrefab = ExtResource("2_68fdh")
+shootCooldown = 0.1
+dashSpeed = 800.0
+dashCooldownTime = 1.0
+
+[node name="ShootPos" type="Node2D" parent="."]
+position = Vector2(24, -2.08165e-12)
+script = ExtResource("3_ldfkr")
+projectile_resources = Array[ExtResource("4_ugtmn")]([ExtResource("5_ch7na")])
+
+[node name="TriggerArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(-1.38777e-12, -1.38777e-12)
+scale = Vector2(0.8, 0.8)
+shape = SubResource("RectangleShape2D_s4swe")
+debug_color = Color(0.882353, 0, 0.815686, 0.419608)
+
+[node name="Node2D" type="Node2D" parent="TriggerArea"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(3, 3)
+texture = ExtResource("2_qeeh2")
+hframes = 4
+script = ExtResource("4_o4trc")
+timeToTrail = 0.2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-2.08165e-12, -2.08165e-12)
+shape = SubResource("RectangleShape2D_s4swe")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+
+[node name="CoyoteTimer" type="Timer" parent="Timers"]
+wait_time = 0.1
+
+[node name="InvincibilityTimer" type="Timer" parent="Timers"]
+wait_time = 3.0
+one_shot = true
+
+[node name="DashTimer" type="Timer" parent="Timers"]
+wait_time = 0.3
+one_shot = true
+
+[node name="TrailTimer" type="Timer" parent="Timers"]
+wait_time = 0.05
+one_shot = true
+
+[node name="MainAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ljnb1")
+}
+
+[node name="HurtAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ljnb1")
+}
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_takbn")
+volume_db = 7.0
+
+[node name="GroundParticles" type="CPUParticles2D" parent="."]
+position = Vector2(-2.08165e-12, 26)
+emitting = false
+amount = 12
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+direction = Vector2(2.08165e-12, -1)
+spread = 90.0
+gravity = Vector2(0, 100)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+linear_accel_min = -30.0
+tangential_accel_max = 53.52
+damping_max = 10.563
+scale_amount_min = 6.0
+scale_amount_max = 6.0
+
+[node name="DeathExplosion" type="CPUParticles2D" parent="."]
+position = Vector2(-2.08165e-12, 26)
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+direction = Vector2(2.08165e-12, -1)
+spread = 90.0
+gravity = Vector2(0, 100)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+linear_accel_min = -30.0
+tangential_accel_max = 53.52
+damping_max = 10.563
+scale_amount_min = 6.0
+scale_amount_max = 6.0
+
+[connection signal="area_entered" from="TriggerArea" to="." method="_on_trigger_area_entered"]
+[connection signal="timeout" from="Timers/ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="Timers/CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
+[connection signal="timeout" from="Timers/InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="Timers/DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="Timers/TrailTimer" to="." method="_on_trail_timer_timeout"]

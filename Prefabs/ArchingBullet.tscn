@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://duu7qrdg1mc2s"]
+
+[ext_resource type="Texture2D" uid="uid://17lemfo6cgqh" path="res://Sprites/RedCircle.png" id="1_lx3o8"]
+[ext_resource type="Script" path="res://Scripts/ArcingBullet.gd" id="2_4hjxt"]
+
+[node name="ArcingBullet" type="Sprite2D"]
+position = Vector2(2.1684e-19, 2.1684e-19)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_lx3o8")
+script = ExtResource("2_4hjxt")

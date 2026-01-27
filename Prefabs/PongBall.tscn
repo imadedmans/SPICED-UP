@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://b70bdyqy7v0bu"]
+
+[ext_resource type="Script" path="res://Scripts/PongLevel/PongBall.gd" id="1_lo3my"]
+[ext_resource type="Texture2D" uid="uid://bv4ot3fg7ig3f" path="res://Sprites/EnemySprites/EnemyBulletDefault.png" id="2_k8om7"]
+[ext_resource type="Script" path="res://Scripts/TrailEffect.gd" id="3_l5jjg"]
+[ext_resource type="PackedScene" uid="uid://bi57shfwm2wya" path="res://Prefabs/Enemies/EnemyBullet.tscn" id="4_m1gaq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jnqsk"]
+size = Vector2(28, 28)
+
+[node name="PongBall" type="CharacterBody2D"]
+z_index = 4
+collision_layer = 16
+slide_on_ceiling = false
+script = ExtResource("1_lo3my")
+speed = 600.0
+startRand = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(0.999985, 4.76837e-07)
+shape = SubResource("RectangleShape2D_jnqsk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(7, 7)
+texture = ExtResource("2_k8om7")
+hframes = 4
+script = ExtResource("3_l5jjg")
+timeToTrail = 0.3
+
+[node name="EffectTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="ExistenceTime" type="Timer" parent="."]
+wait_time = 4.0
+
+[node name="EnemyBullet" parent="." instance=ExtResource("4_m1gaq")]
+visible = false
+position = Vector2(0, 0)
+scale = Vector2(6, 6)
+speed = 0.0
+
+[connection signal="timeout" from="EffectTimer" to="." method="_on_effect_timer_timeout"]
+[connection signal="timeout" from="ExistenceTime" to="." method="_on_existence_time_timeout"]

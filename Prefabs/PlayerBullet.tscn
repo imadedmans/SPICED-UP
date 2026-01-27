@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://mtj675cc7mji"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerBullet.gd" id="1_eiphn"]
+[ext_resource type="Texture2D" uid="uid://dt1yi336oulf7" path="res://Sprites/PlayerSprites/PlayerBulletDefault.png" id="2_27e2m"]
+[ext_resource type="AudioStream" uid="uid://dqik1fhupv5cc" path="res://SFX/PlayerShoot.wav" id="3_j1lhj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ub7or"]
+size = Vector2(18, 9)
+
+[node name="PlayerBullet" type="Node2D"]
+z_index = 5
+position = Vector2(2.08165e-12, 2.08165e-12)
+script = ExtResource("1_eiphn")
+speed = 1000.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(3, 3)
+texture = ExtResource("2_27e2m")
+
+[node name="DestroyTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ub7or")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_j1lhj")
+volume_db = 5.0
+autoplay = true
+
+[connection signal="timeout" from="DestroyTimer" to="." method="_on_destroy_timer_timeout"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_entered"]

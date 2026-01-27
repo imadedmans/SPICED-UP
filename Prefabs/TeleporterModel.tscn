@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://lfcjn871srm2"]
+
+[ext_resource type="Script" path="res://Scripts/3DRotate.gd" id="1_3egvo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8d6ok"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.736724, 0.165973, 0.124444, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lmp35"]
+material = SubResource("StandardMaterial3D_8d6ok")
+
+[node name="HealthPickupModel" type="Node3D"]
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+mesh = SubResource("BoxMesh_lmp35")
+skeleton = NodePath("../..")
+script = ExtResource("1_3egvo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.919623, 0.392803, 0, -0.392803, 0.919623, 0, 1.26244, 2.79799)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.919623, 0.392803, 0, -0.392803, 0.919623, 0, 0.86595, 1.70892)

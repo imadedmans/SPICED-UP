@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://cwmtvcnq466h0"]
+
+[ext_resource type="Texture2D" uid="uid://dadw8ijxyx8s" path="res://Sprites/Shitpost/eggguy.png" id="1_yoqhe"]
+[ext_resource type="Script" path="res://Scripts/EZ2BossTest.gd" id="2_35qkh"]
+[ext_resource type="Texture2D" uid="uid://c6nfyphe6kk70" path="res://Sprites/Shitpost/james rolfe.jpeg" id="3_yajdj"]
+[ext_resource type="Script" path="res://Scripts/NerdChild.gd" id="4_bl73l"]
+[ext_resource type="Texture2D" uid="uid://bdy0h5ytqtm5m" path="res://Sprites/Shitpost/pizza box man.png" id="5_k00mc"]
+[ext_resource type="Texture2D" uid="uid://c8j315v4nb8y7" path="res://Sprites/Shitpost/WIDEberry.png" id="6_dehr5"]
+[ext_resource type="Texture2D" uid="uid://bcg5oviwjph4a" path="res://Sprites/Shitpost/heavy weapons man.png" id="7_018re"]
+
+[node name="EZ2BossTestt" type="Sprite2D"]
+z_index = -2
+position = Vector2(0, -209)
+texture = ExtResource("1_yoqhe")
+script = ExtResource("2_35qkh")
+circleXRange = 300.0
+circleYRange = 90.0
+colourSpeed = 2.5
+sizeLimit = 0.8
+
+[node name="NerdChild1" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-452, -345)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("3_yajdj")
+script = ExtResource("4_bl73l")
+targetPos = Vector2(-500, 75)
+
+[node name="NerdChild2" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-269.15, -346.6)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("5_k00mc")
+script = ExtResource("4_bl73l")
+targetPos = Vector2(500, 75)
+
+[node name="NerdChild3" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-119.15, -346.6)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("6_dehr5")
+script = ExtResource("4_bl73l")
+targetPos = Vector2(-500, -25)
+
+[node name="NerdChild4" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(41, -347)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_018re")
+script = ExtResource("4_bl73l")
+targetPos = Vector2(500, -25)
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="ReplacementNode" type="Node2D" parent="."]
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
