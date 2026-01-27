@@ -1,0 +1,4 @@
+5 - Player, Player Bullet
+4 - Intro Thing
+2 - Enemy
+0 - Floor
