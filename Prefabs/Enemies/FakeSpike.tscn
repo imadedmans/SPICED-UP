@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://b6uqkbvomokjr"]
+
+[ext_resource type="Script" path="res://Scripts/FakeSpike.gd" id="1_0nm1k"]
+[ext_resource type="Script" path="res://Scripts/Enemies/EnemyArea.gd" id="2_0tt2i"]
+[ext_resource type="AudioStream" uid="uid://cw8cmd7pwanmf" path="res://SFX/EnemyDeath.wav" id="3_864r3"]
+[ext_resource type="Texture2D" uid="uid://dnw6lqxyg2bfh" path="res://Sprites/FakeSpike.png" id="3_qjphh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t0t66"]
+size = Vector2(15, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6806n"]
+size = Vector2(24, 286)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hr2tf"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 1.0
+
+[node name="FakeSpike" type="CharacterBody2D"]
+z_index = 2
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_0nm1k")
+speed = 10.0
+timeToShake = 0.5
+waitTime = 0.1
+maxDistance = -96.0
+canTakeDamage = false
+healthpoints = 50
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-1.5, 10)
+shape = SubResource("RectangleShape2D_t0t66")
+
+[node name="EnemyArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 138
+script = ExtResource("2_0tt2i")
+parentPath = NodePath("..")
+
+[node name="ColArea" type="CollisionShape2D" parent="EnemyArea"]
+visible = false
+z_index = 1
+position = Vector2(-1, 10)
+shape = SubResource("RectangleShape2D_t0t66")
+
+[node name="PlayerDetect" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="ColArea" type="CollisionShape2D" parent="PlayerDetect"]
+z_index = 1
+position = Vector2(-2.08165e-12, -95)
+shape = SubResource("RectangleShape2D_6806n")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("3_qjphh")
+
+[node name="DefaultTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WaitTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="DeathParticles" type="GPUParticles2D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_hr2tf")
+explosiveness = 1.0
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_864r3")
+
+[connection signal="area_entered" from="EnemyArea" to="." method="_on_enemy_area_area_entered"]
+[connection signal="area_exited" from="EnemyArea" to="." method="_on_enemy_area_area_exited"]
+[connection signal="area_entered" from="PlayerDetect" to="." method="_on_player_detect"]
+[connection signal="timeout" from="DefaultTimer" to="." method="_on_default_timer_timeout"]
+[connection signal="timeout" from="WaitTimer" to="." method="_on_wait_timer_timeout"]

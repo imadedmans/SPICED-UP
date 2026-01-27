@@ -1,0 +1,113 @@
+[gd_scene load_steps=13 format=3 uid="uid://2m0v656khrh4"]
+
+[ext_resource type="Script" path="res://Scripts/Enemies/Enemy.gd" id="1_34l2a"]
+[ext_resource type="Script" path="res://Scripts/Enemies/EnemyArea.gd" id="2_ara6p"]
+[ext_resource type="Script" path="res://Scripts/AllProjectiles/main/projectile_caller_2d.gd" id="3_hb0rj"]
+[ext_resource type="Texture2D" uid="uid://dfwwwe4vs4tei" path="res://Sprites/Ceilinger.png" id="3_lo70e"]
+[ext_resource type="Script" path="res://Scripts/AllProjectiles/resources/projectile_blueprint_2d.gd" id="4_n063s"]
+[ext_resource type="Resource" uid="uid://dmxuywql33aui" path="res://Resources/EnemyBullet.tres" id="5_voxby"]
+[ext_resource type="AudioStream" uid="uid://cw8cmd7pwanmf" path="res://SFX/EnemyDeath.wav" id="6_nfikn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t0t66"]
+size = Vector2(57.3333, 31.1667)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hr2tf"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 1.0
+
+[sub_resource type="Animation" id="Animation_4nnqn"]
+resource_name = "CeilingerRotate"
+length = 0.6
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_fxsm0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1k1el"]
+_data = {
+"CeilingerRotate": SubResource("Animation_4nnqn"),
+"RESET": SubResource("Animation_fxsm0")
+}
+
+[node name="CeilingEnemy" type="CharacterBody2D"]
+z_index = 2
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 4
+script = ExtResource("1_34l2a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-2, 0)
+shape = SubResource("RectangleShape2D_t0t66")
+
+[node name="EnemyArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 138
+script = ExtResource("2_ara6p")
+parentPath = NodePath("..")
+
+[node name="ColArea" type="CollisionShape2D" parent="EnemyArea"]
+z_index = 1
+shape = SubResource("RectangleShape2D_t0t66")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(3, 3)
+texture = ExtResource("3_lo70e")
+hframes = 12
+frame = 6
+
+[node name="DefaultTimer" type="Timer" parent="."]
+
+[node name="ShootPosition" type="Node2D" parent="."]
+script = ExtResource("3_hb0rj")
+projectile_resources = Array[ExtResource("4_n063s")]([ExtResource("5_voxby")])
+
+[node name="DeathParticles" type="GPUParticles2D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_hr2tf")
+explosiveness = 1.0
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_nfikn")
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../DeathParticles")
+libraries = {
+"": SubResource("AnimationLibrary_1k1el")
+}
+
+[connection signal="area_entered" from="EnemyArea" to="." method="_on_enemy_area_area_entered"]
+[connection signal="area_exited" from="EnemyArea" to="." method="_on_enemy_area_area_exited"]
+[connection signal="timeout" from="DefaultTimer" to="." method="_on_default_timer_timeout"]

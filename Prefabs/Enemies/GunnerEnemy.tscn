@@ -1,0 +1,143 @@
+[gd_scene load_steps=17 format=3 uid="uid://b3sy3jrdhi0ox"]
+
+[ext_resource type="Script" path="res://Scripts/Enemies/GunnerEnemy.gd" id="1_1df4a"]
+[ext_resource type="PackedScene" uid="uid://bi57shfwm2wya" path="res://Prefabs/Enemies/EnemyBullet.tscn" id="2_m3o6c"]
+[ext_resource type="PackedScene" uid="uid://cndryubrgyx54" path="res://Prefabs/Enemies/EnemyDeathEffect.tscn" id="3_8hvln"]
+[ext_resource type="Script" path="res://Scripts/Enemies/EnemyArea.gd" id="3_24xfm"]
+[ext_resource type="Texture2D" uid="uid://cvtpyxaoachq4" path="res://Sprites/EnemySprites/GunnerSprites.png" id="3_h62s3"]
+[ext_resource type="Script" path="res://Scripts/AllProjectiles/main/projectile_caller_2d.gd" id="4_5o1gp"]
+[ext_resource type="AudioStream" uid="uid://cw8cmd7pwanmf" path="res://SFX/EnemyDeath.wav" id="4_aism3"]
+[ext_resource type="Script" path="res://Scripts/AllProjectiles/resources/projectile_blueprint_2d.gd" id="5_pace7"]
+[ext_resource type="AudioStream" uid="uid://clql44o1cnjbt" path="res://SFX/GunnerShoot.wav" id="5_vjxub"]
+[ext_resource type="Resource" uid="uid://dmxuywql33aui" path="res://Resources/EnemyBullet.tres" id="6_5tlx3"]
+[ext_resource type="Material" uid="uid://dpfiytoefbop5" path="res://Resources/EnemyDeathParticles.tres" id="11_htxh8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t0t66"]
+size = Vector2(74.6667, 50.6667)
+
+[sub_resource type="Animation" id="Animation_qth6j"]
+resource_name = "GunnerIdle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_nvuaw"]
+resource_name = "GunnerShoot"
+length = 0.4
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.04, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:isSTILLshooting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.34),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_bw85m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:isSTILLshooting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ydiij"]
+_data = {
+"GunnerIdle": SubResource("Animation_qth6j"),
+"GunnerShoot": SubResource("Animation_nvuaw"),
+"RESET": SubResource("Animation_bw85m")
+}
+
+[node name="GunnerEnemy" type="CharacterBody2D"]
+z_index = 2
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 4
+platform_floor_layers = 4294901760
+script = ExtResource("1_1df4a")
+timeBetweenShot = 0.3
+bulletPrefab = ExtResource("2_m3o6c")
+affectedByGravity = true
+enemyDeathEffect = ExtResource("3_8hvln")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_t0t66")
+
+[node name="EnemyArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 138
+script = ExtResource("3_24xfm")
+parentPath = NodePath("..")
+
+[node name="ColArea" type="CollisionShape2D" parent="EnemyArea"]
+shape = SubResource("RectangleShape2D_t0t66")
+
+[node name="ShootPosition" type="Node2D" parent="."]
+position = Vector2(-35.666, -11.666)
+script = ExtResource("4_5o1gp")
+projectile_resources = Array[ExtResource("5_pace7")]([ExtResource("6_5tlx3")])
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(3, 3)
+texture = ExtResource("3_h62s3")
+hframes = 3
+
+[node name="DefaultTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ydiij")
+}
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_vjxub")
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_aism3")
+
+[node name="DeathParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 20
+process_material = ExtResource("11_htxh8")
+one_shot = true
+explosiveness = 1.0
+randomness = 0.1
+
+[connection signal="area_entered" from="EnemyArea" to="." method="_on_enemy_area_area_entered"]
+[connection signal="area_exited" from="EnemyArea" to="." method="_on_enemy_area_area_exited"]
+[connection signal="timeout" from="DefaultTimer" to="." method="_on_default_timer_timeout"]

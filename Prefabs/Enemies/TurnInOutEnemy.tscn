@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://c7o45fah3yb3t"]
+
+[ext_resource type="Script" path="res://Scripts/Enemies/TurnInOutEnemy.gd" id="1_va8cw"]
+[ext_resource type="Script" path="res://Scripts/Enemies/EnemyArea.gd" id="2_6r48j"]
+[ext_resource type="PackedScene" uid="uid://cndryubrgyx54" path="res://Prefabs/Enemies/EnemyDeathEffect.tscn" id="2_e5rph"]
+[ext_resource type="Texture2D" uid="uid://buwvg7lo5xmaf" path="res://Sprites/EnemySprites/TurninTurnout.png" id="2_tj3gh"]
+[ext_resource type="AudioStream" uid="uid://cw8cmd7pwanmf" path="res://SFX/EnemyDeath.wav" id="3_0i187"]
+[ext_resource type="Material" uid="uid://dpfiytoefbop5" path="res://Resources/EnemyDeathParticles.tres" id="6_c4uni"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t0t66"]
+size = Vector2(57, 63)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1alsa"]
+size = Vector2(51, 50)
+
+[node name="TurnInOutEnemy" type="CharacterBody2D"]
+z_index = 2
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 4
+script = ExtResource("1_va8cw")
+targetXNorm = 260.0
+targetXSlow = 60.0
+speed = 260.0
+minSpeed = 60.0
+enemyDeathEffect = ExtResource("2_e5rph")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 1.5)
+shape = SubResource("RectangleShape2D_t0t66")
+
+[node name="EnemyArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 138
+script = ExtResource("2_6r48j")
+parentPath = NodePath("..")
+
+[node name="ColArea" type="CollisionShape2D" parent="EnemyArea"]
+position = Vector2(1.5, 4)
+shape = SubResource("RectangleShape2D_1alsa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(3, 3)
+texture = ExtResource("2_tj3gh")
+hframes = 4
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(-240, 0)
+
+[node name="DefaultTimer" type="Timer" parent="."]
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_0i187")
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="DeathParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 20
+process_material = ExtResource("6_c4uni")
+one_shot = true
+explosiveness = 1.0
+randomness = 0.1
+
+[connection signal="area_entered" from="EnemyArea" to="." method="_on_enemy_area_area_entered"]
+[connection signal="area_exited" from="EnemyArea" to="." method="_on_enemy_area_area_exited"]
+[connection signal="timeout" from="DefaultTimer" to="." method="_on_default_timer_timeout"]

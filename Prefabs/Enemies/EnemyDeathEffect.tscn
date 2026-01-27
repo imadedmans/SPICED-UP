@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cndryubrgyx54"]
+
+[ext_resource type="Script" path="res://Scripts/EnemyDeathSprite.gd" id="1_cu2bc"]
+
+[node name="EnemyDeathEffect" type="RigidBody2D"]
+script = ExtResource("1_cu2bc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
