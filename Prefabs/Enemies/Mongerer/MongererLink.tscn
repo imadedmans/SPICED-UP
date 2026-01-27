@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://n8nfi3xthqi"]
+
+[ext_resource type="Texture2D" uid="uid://77vl4p4qacg5" path="res://Sprites/EnemySprites/Mongerer/MongererLink.png" id="1_qxcpk"]
+
+[node name="Link" type="Sprite2D"]
+scale = Vector2(3, 3)
+texture = ExtResource("1_qxcpk")
