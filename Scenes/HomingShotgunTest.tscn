@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://bk5xjqloftgto"]
+
+[ext_resource type="Texture2D" uid="uid://cmp36wcky2862" path="res://Sprites/spiky man thing.png" id="1_3m2wk"]
+[ext_resource type="Script" path="res://Scripts/MultiShot.gd" id="2_l0rsn"]
+[ext_resource type="Texture2D" uid="uid://bahr7m3dk2pq3" path="res://ProjectileIcons/Circle.png" id="3_b8v4e"]
+[ext_resource type="Script" path="res://Scripts/a_boolet.gd" id="4_605v6"]
+
+[node name="HomingShotgunTest" type="Node2D"]
+
+[node name="TheDobject" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(640, 400)
+scale = Vector2(5, 5)
+texture = ExtResource("1_3m2wk")
+hframes = 2
+script = ExtResource("2_l0rsn")
+numOfShots = 3
+angleSpread = 90.0
+
+[node name="ABoolet" type="Sprite2D" parent="TheDobject"]
+modulate = Color(0.818057, 0, 0.141142, 1)
+position = Vector2(-7.62939e-06, -105.6)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_b8v4e")
+script = ExtResource("4_605v6")
+moveSpeed = 1000.0
+
+[node name="DeleteTimer" type="Timer" parent="TheDobject/ABoolet"]
+wait_time = 3.0
+autostart = true
+
+[node name="WaitTimer" type="Timer" parent="TheDobject"]
+wait_time = 0.5
+autostart = true
+
+[node name="TimeBetweenShots" type="Timer" parent="TheDobject"]
+wait_time = 0.2
+
+[node name="BulletLabel" type="Label" parent="TheDobject"]
+offset_left = -128.0
+offset_top = -78.0
+offset_right = 376.0
+offset_bottom = -32.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 30
+text = "Num of Bullets:"
+
+[node name="AngleLabel" type="Label" parent="TheDobject"]
+offset_left = -128.0
+offset_top = -67.0
+offset_right = 384.0
+offset_bottom = -21.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 30
+text = "Angle Spread:"
+
+[connection signal="timeout" from="TheDobject/ABoolet/DeleteTimer" to="TheDobject/ABoolet" method="_on_delete_timer_timeout"]
+[connection signal="timeout" from="TheDobject/WaitTimer" to="TheDobject" method="_on_wait_timer_timeout"]

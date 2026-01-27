@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1njj6art7qy0"]
+
+[ext_resource type="Script" path="res://Scenes/PendulumTest.gd" id="1_55orw"]
+[ext_resource type="Texture2D" uid="uid://cmp36wcky2862" path="res://Sprites/spiky man thing.png" id="2_lnd2y"]
+
+[node name="PendulumTest" type="Node2D"]
+script = ExtResource("1_55orw")
+speed = 3.0
+
+[node name="Pendulum" type="Sprite2D" parent="."]
+z_index = 10
+position = Vector2(640, 400)
+scale = Vector2(5, 5)
+texture = ExtResource("2_lnd2y")
+hframes = 2
+
+[node name="Centre" type="Sprite2D" parent="."]
+position = Vector2(640, 100)
+scale = Vector2(5, 5)
+texture = ExtResource("2_lnd2y")
+hframes = 2
+frame = 1

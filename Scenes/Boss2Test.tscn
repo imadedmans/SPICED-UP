@@ -1,0 +1,106 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgijo6as5kskl"]
+
+[ext_resource type="Texture2D" uid="uid://66qsixgjbtx6" path="res://Sprites/DefaultTexture.jpg" id="2_krqqa"]
+[ext_resource type="Script" path="res://Scripts/WizardBoss.gd" id="3_s472j"]
+[ext_resource type="PackedScene" uid="uid://7mh18nnifd0l" path="res://Prefabs/Player.tscn" id="4_auvv0"]
+[ext_resource type="PackedScene" uid="uid://dv3esipi5u4cl" path="res://Prefabs/EnemyBulletOLD.tscn" id="4_o5xsi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s4swe"]
+size = Vector2(48, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y17he"]
+size = Vector2(2790.91, 94)
+
+[node name="Boss2Test" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="WizardBoss" type="StaticBody2D" parent="."]
+position = Vector2(0, -170)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_s472j")
+timeToPosition = 0.2
+moveWaitTime = 0.5
+circleXRange = 400.0
+circleYRange = 100.0
+circlingSpeed = 3.0
+numOfBInterval = 40
+shotsBPerInterval = 5
+shootBWaitTime = 0.05
+minRandPos = Vector2(-500, -280)
+maxRandPos = Vector2(470, -90)
+arenaCenter = Vector2(2.08165e-12, -130)
+bulletPrefab = ExtResource("4_o5xsi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WizardBoss"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_s4swe")
+
+[node name="Sprite2D" type="Sprite2D" parent="WizardBoss"]
+modulate = Color(0.717647, 0.6, 0, 1)
+position = Vector2(0, -1)
+scale = Vector2(0.0776, 0.168889)
+texture = ExtResource("2_krqqa")
+
+[node name="MoveTimer" type="Timer" parent="WizardBoss"]
+one_shot = true
+
+[node name="ShootATimer" type="Timer" parent="WizardBoss"]
+wait_time = 0.1
+one_shot = true
+
+[node name="ShootBTimer" type="Timer" parent="WizardBoss"]
+wait_time = 0.1
+one_shot = true
+
+[node name="CirclingTimer" type="Timer" parent="WizardBoss"]
+wait_time = 0.6
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(-384, 274)
+scale = Vector2(0.44, 1)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(847.727, 0)
+shape = SubResource("RectangleShape2D_y17he")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+position = Vector2(823.977, 2.08165e-12)
+scale = Vector2(4.46873, 0.208889)
+texture = ExtResource("2_krqqa")
+
+[node name="Floor2" type="StaticBody2D" parent="."]
+position = Vector2(-581, -224)
+rotation = 1.5708
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2"]
+position = Vector2(-3.05176e-05, 0)
+shape = SubResource("RectangleShape2D_y17he")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor2"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(1.832, 0.208889)
+texture = ExtResource("2_krqqa")
+
+[node name="Floor3" type="StaticBody2D" parent="."]
+position = Vector2(560, -224)
+rotation = 1.5708
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor3"]
+shape = SubResource("RectangleShape2D_y17he")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor3"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(1.832, 0.208889)
+texture = ExtResource("2_krqqa")
+
+[node name="Player" parent="." instance=ExtResource("4_auvv0")]
+
+[connection signal="timeout" from="WizardBoss/MoveTimer" to="WizardBoss" method="_on_move_timer_timeout"]
+[connection signal="timeout" from="WizardBoss/ShootATimer" to="WizardBoss" method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="WizardBoss/ShootBTimer" to="WizardBoss" method="_on_shoot_b_timer_timeout"]
+[connection signal="timeout" from="WizardBoss/CirclingTimer" to="WizardBoss" method="_on_circling_timer_timeout"]

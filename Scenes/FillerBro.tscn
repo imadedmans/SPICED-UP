@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcknmbai85vb6"]
+
+[ext_resource type="PackedScene" uid="uid://lfcjn871srm2" path="res://Prefabs/TeleporterModel.tscn" id="1_1s5y7"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3k0ln"]
+viewport_path = NodePath("Panel/SubViewport")
+
+[node name="FillerBro" type="Node2D"]
+
+[node name="Panel" type="SubViewportContainer" parent="."]
+offset_right = 1274.0
+offset_bottom = 792.0
+
+[node name="SubViewport" type="SubViewport" parent="Panel"]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="HealthPickup" parent="Panel/SubViewport" instance=ExtResource("1_1s5y7")]
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel"]
+top_level = true
+z_index = -5
+position = Vector2(638, 368)
+texture = SubResource("ViewportTexture_3k0ln")

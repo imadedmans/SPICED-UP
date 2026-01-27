@@ -1,0 +1,114 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7bfjr7p4hcq7"]
+
+[ext_resource type="Texture2D" uid="uid://c7s5ljummdmk6" path="res://Sprites/52-card-pack.png" id="1_0kwue"]
+[ext_resource type="Script" path="res://Scripts/CardManager.gd" id="1_u5tqb"]
+[ext_resource type="FontFile" uid="uid://bcvfvnxjfjg87" path="res://Fonts/Modern_DOS/ModernDOS8x16.ttf" id="2_cx6gm"]
+
+[node name="CardScene" type="Node2D"]
+script = ExtResource("1_u5tqb")
+
+[node name="BeginGame" type="RichTextLabel" parent="."]
+offset_left = -264.0
+offset_top = -24.0
+offset_right = 254.0
+offset_bottom = 23.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "Press SPACE to begin game"
+
+[node name="GameOver" type="RichTextLabel" parent="."]
+visible = false
+offset_left = -100.0
+offset_top = -296.0
+offset_right = 168.0
+offset_bottom = -249.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "You're A Lose"
+
+[node name="YouWin" type="RichTextLabel" parent="."]
+visible = false
+offset_left = -94.0
+offset_top = -296.0
+offset_right = 144.0
+offset_bottom = -249.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "Your Winner"
+
+[node name="EndPoints" type="RichTextLabel" parent="."]
+visible = false
+offset_left = -138.0
+offset_top = -246.0
+offset_right = 232.0
+offset_bottom = -199.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "Points Gained: "
+
+[node name="CardObject" type="Sprite2D" parent="."]
+position = Vector2(-535, -500)
+scale = Vector2(2, 2)
+texture = ExtResource("1_0kwue")
+hframes = 13
+vframes = 4
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CardPositions" type="Node2D" parent="."]
+
+[node name="CardPos1" type="Node2D" parent="CardPositions"]
+position = Vector2(-350, 0)
+
+[node name="CardPos2" type="Node2D" parent="CardPositions"]
+position = Vector2(-125, 0)
+
+[node name="CardPos3" type="Node2D" parent="CardPositions"]
+position = Vector2(125, 0)
+
+[node name="CardPos4" type="Node2D" parent="CardPositions"]
+position = Vector2(350, 0)
+
+[node name="FistReminder" type="RichTextLabel" parent="."]
+visible = false
+offset_left = 8.0
+offset_top = 296.0
+offset_right = 640.0
+offset_bottom = 343.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "You can only attack with fists!"
+
+[node name="HealthLabel" type="RichTextLabel" parent="."]
+offset_left = -556.0
+offset_top = -317.0
+offset_right = -112.0
+offset_bottom = -270.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "Player Health: 20/20"
+
+[node name="CardNumLabel" type="RichTextLabel" parent="."]
+offset_left = -558.0
+offset_top = -270.0
+offset_right = -136.0
+offset_bottom = -223.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "Cards Left: 46/46"
+
+[node name="WeaponDamage" type="RichTextLabel" parent="."]
+visible = false
+offset_left = -559.0
+offset_top = -228.0
+offset_right = -72.0
+offset_bottom = -181.0
+theme_override_fonts/normal_font = ExtResource("2_cx6gm")
+theme_override_font_sizes/normal_font_size = 40
+text = "Max Weapon Damage: 9/9"
+
+[node name="WeaponCardPos" type="Node2D" parent="."]
+position = Vector2(-352, 288)
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -80.0

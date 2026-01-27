@@ -1,0 +1,139 @@
+[gd_scene load_steps=10 format=3 uid="uid://bjcepjwvypy7l"]
+
+[ext_resource type="PackedScene" uid="uid://7mh18nnifd0l" path="res://Prefabs/Player.tscn" id="1_1e7ed"]
+[ext_resource type="Texture2D" uid="uid://66qsixgjbtx6" path="res://Sprites/DefaultTexture.jpg" id="4_k1y3s"]
+[ext_resource type="Script" path="res://Scripts/BezierMoveTest.gd" id="6_d2vpd"]
+[ext_resource type="PackedScene" uid="uid://duu7qrdg1mc2s" path="res://Prefabs/ArchingBullet.tscn" id="6_qpruh"]
+[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="7_avk7e"]
+[ext_resource type="Script" path="res://Scripts/Misc/QuickPathScript.gd" id="8_04u27"]
+[ext_resource type="Texture2D" uid="uid://17lemfo6cgqh" path="res://Sprites/RedCircle.png" id="8_584dx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y17he"]
+size = Vector2(1531.59, 94)
+
+[sub_resource type="Curve2D" id="Curve2D_ibqfs"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1460, 5700, -1778.67, -58.1266, 1778.67, 58.1266, 820, 2080, 0, 0, 0, 0, 3500, 7700)
+}
+point_count = 3
+
+[node name="SampleScene" type="Node2D"]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("7_avk7e")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="Player" parent="." instance=ExtResource("1_1e7ed")]
+position = Vector2(-239, 143)
+shootCooldown = 0.1
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 377)
+scale = Vector2(1.13556, 3.11783)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_y17he")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(2.45055, 0.208889)
+texture = ExtResource("4_k1y3s")
+
+[node name="Floor2" type="StaticBody2D" parent="."]
+position = Vector2(-627, -224)
+rotation = 1.5708
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2"]
+shape = SubResource("RectangleShape2D_y17he")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor2"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(1.832, 0.208889)
+texture = ExtResource("4_k1y3s")
+
+[node name="Floor3" type="StaticBody2D" parent="."]
+position = Vector2(636, -224)
+rotation = 1.5708
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor3"]
+shape = SubResource("RectangleShape2D_y17he")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor3"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(1.832, 0.208889)
+texture = ExtResource("4_k1y3s")
+
+[node name="Path2D" type="Path2D" parent="."]
+visible = false
+position = Vector2(-131, -211)
+scale = Vector2(0.05, 0.05)
+curve = SubResource("Curve2D_ibqfs")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-1460, 5700)
+rotates = false
+script = ExtResource("8_04u27")
+
+[node name="VertexPrefab" type="Sprite2D" parent="Path2D/PathFollow2D"]
+position = Vector2(0.000366211, -0.000244141)
+texture = ExtResource("8_584dx")
+
+[node name="ShootPoint" type="Node2D" parent="."]
+position = Vector2(509, 181)
+scale = Vector2(0.05, 0.05)
+
+[node name="Timer" type="Timer" parent="ShootPoint"]
+
+[node name="ArcingBullet" parent="." instance=ExtResource("6_qpruh")]
+position = Vector2(41, 24)
+moveSpeed = 100.0
+targetPos = Vector2(501, 24)
+height = 200
+
+[node name="Timer" type="Timer" parent="ArcingBullet"]
+one_shot = true
+autostart = true
+
+[node name="ArcingBullet2" parent="." instance=ExtResource("6_qpruh")]
+position = Vector2(501, 24)
+script = null
+
+[node name="ArcingBullet3" parent="." instance=ExtResource("6_qpruh")]
+position = Vector2(271, -176)
+script = null
+
+[node name="MainNode" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -347)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_584dx")
+
+[node name="PartA" type="Node2D" parent="MainNode"]
+position = Vector2(-400, 2.08165e-12)
+script = ExtResource("6_d2vpd")
+moveSpeed = 0.5
+
+[node name="FirstNode" type="Sprite2D" parent="MainNode/PartA"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_584dx")
+
+[node name="ControlPoint" type="Node2D" parent="MainNode/PartA"]
+position = Vector2(-1980, 660)
+
+[node name="TargetPoint" type="Node2D" parent="MainNode/PartA"]
+position = Vector2(-15, 1270)
+
+[node name="ControlPoint2" type="Node2D" parent="MainNode/PartA"]
+position = Vector2(-1690, 2045)
+
+[node name="TargetPoint2" type="Node2D" parent="MainNode/PartA"]
+position = Vector2(-20.0001, 2700)
+
+[connection signal="timeout" from="ArcingBullet/Timer" to="ArcingBullet" method="_on_timer_timeout"]

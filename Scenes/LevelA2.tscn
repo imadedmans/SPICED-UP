@@ -1,0 +1,158 @@
+[gd_scene load_steps=9 format=3 uid="uid://cbwv5pp5c523k"]
+
+[ext_resource type="PackedScene" uid="uid://7mh18nnifd0l" path="res://Prefabs/Player.tscn" id="2_dt4tq"]
+[ext_resource type="Script" path="res://Scripts/PongLevel/PongPaddle.gd" id="3_0yrmn"]
+[ext_resource type="Texture2D" uid="uid://66qsixgjbtx6" path="res://Sprites/DefaultTexture.jpg" id="4_cot8y"]
+[ext_resource type="PackedScene" uid="uid://b70bdyqy7v0bu" path="res://Prefabs/PongBall.tscn" id="4_sxcne"]
+[ext_resource type="Texture2D" uid="uid://byksuhcdsgq63" path="res://Sprites/PongBarrier.png" id="6_200lv"]
+[ext_resource type="FontFile" uid="uid://d14efw0ftb2b6" path="res://Fonts/Modern_DOS/ModernDOS8x8.ttf" id="8_7nrxj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ivm2u"]
+size = Vector2(627.207, 449.001)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_y0emw"]
+b = Vector2(0, 800)
+
+[node name="PongLevel" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+modulate = Color(0.439216, 0.439216, 0.439216, 1)
+position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="Player" parent="." instance=ExtResource("2_dt4tq")]
+position = Vector2(0, 192)
+
+[node name="FloorGroup" type="Node2D" parent="."]
+z_index = -1
+position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="Floor" type="Sprite2D" parent="FloorGroup"]
+modulate = Color(0.309804, 0.360784, 0.4, 1)
+position = Vector2(-1.94213e-12, 381.815)
+scale = Vector2(2.28174, 0.561927)
+texture = ExtResource("4_cot8y")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="FloorGroup/Floor"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorGroup/Floor/StaticBody2D"]
+visible = false
+position = Vector2(0.602661, 0.500366)
+shape = SubResource("RectangleShape2D_ivm2u")
+
+[node name="Floor2" type="Sprite2D" parent="FloorGroup"]
+modulate = Color(0.309804, 0.360784, 0.4, 1)
+position = Vector2(-640, 2.08165e-12)
+scale = Vector2(0.250139, 2.11674)
+texture = ExtResource("4_cot8y")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="FloorGroup/Floor2"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorGroup/Floor2/StaticBody2D"]
+visible = false
+position = Vector2(0.602661, 0.500366)
+shape = SubResource("RectangleShape2D_ivm2u")
+
+[node name="Floor3" type="Sprite2D" parent="FloorGroup"]
+modulate = Color(0.309804, 0.360784, 0.4, 1)
+position = Vector2(640, 2.08165e-12)
+scale = Vector2(0.250139, 2.11674)
+texture = ExtResource("4_cot8y")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="FloorGroup/Floor3"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorGroup/Floor3/StaticBody2D"]
+visible = false
+position = Vector2(0.602661, 0.500366)
+shape = SubResource("RectangleShape2D_ivm2u")
+
+[node name="PongObject" type="Node2D" parent="." groups=["Pong"]]
+z_index = 3
+position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="PaddleL" type="Sprite2D" parent="PongObject"]
+position = Vector2(-605, 2.08165e-12)
+scale = Vector2(0.0320238, 0.205169)
+texture = ExtResource("4_cot8y")
+script = ExtResource("3_0yrmn")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PongObject/PaddleL"]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongObject/PaddleL/StaticBody2D"]
+visible = false
+position = Vector2(0.602661, 0.500366)
+shape = SubResource("RectangleShape2D_ivm2u")
+
+[node name="PaddleR" type="Sprite2D" parent="PongObject"]
+position = Vector2(605, 2.08165e-12)
+scale = Vector2(0.0320238, 0.205169)
+texture = ExtResource("4_cot8y")
+script = ExtResource("3_0yrmn")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PongObject/PaddleR"]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongObject/PaddleR/StaticBody2D"]
+visible = false
+position = Vector2(0.602661, 0.500366)
+shape = SubResource("RectangleShape2D_ivm2u")
+
+[node name="PongBall" parent="PongObject" instance=ExtResource("4_sxcne")]
+collision_layer = 80
+collision_mask = 64
+startRand = true
+limitTime = false
+
+[node name="BallBarrier" type="Sprite2D" parent="PongObject"]
+modulate = Color(0.309804, 0.360784, 0.4, 1)
+position = Vector2(1.61559e-27, 412.783)
+scale = Vector2(2.28174, 0.0498526)
+texture = ExtResource("4_cot8y")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PongObject/BallBarrier"]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongObject/BallBarrier/StaticBody2D"]
+visible = false
+position = Vector2(0.602661, 0.500366)
+shape = SubResource("RectangleShape2D_ivm2u")
+
+[node name="BallBarrier2" type="Sprite2D" parent="PongObject"]
+modulate = Color(0.309804, 0.360784, 0.4, 1)
+position = Vector2(2.08165e-12, -412.783)
+scale = Vector2(2.28174, 0.0498526)
+texture = ExtResource("4_cot8y")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PongObject/BallBarrier2"]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongObject/BallBarrier2/StaticBody2D"]
+visible = false
+position = Vector2(0.602661, 0.500366)
+shape = SubResource("RectangleShape2D_ivm2u")
+
+[node name="Barrier" type="Sprite2D" parent="PongObject"]
+visible = false
+scale = Vector2(3, 3)
+texture = ExtResource("6_200lv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(640, -400)
+shape = SubResource("SegmentShape2D_y0emw")
+
+[node name="LevelName" type="RichTextLabel" parent="."]
+offset_left = -696.0
+offset_top = 328.0
+offset_right = 704.0
+offset_bottom = 360.0
+theme_override_fonts/normal_font = ExtResource("8_7nrxj")
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center] YOU SEE, I'VE GOT BALL PROBLEMS [/center]"

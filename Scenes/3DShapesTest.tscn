@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://flmuu02p5avh"]
+
+[ext_resource type="Texture2D" uid="uid://17lemfo6cgqh" path="res://Sprites/RedCircle.png" id="1_iebce"]
+[ext_resource type="Script" path="res://Scripts/3DShapeGenerator.gd" id="2_oecw1"]
+
+[node name="CoolioShapes" type="Node2D"]
+
+[node name="VertexPrefab" type="Sprite2D" parent="."]
+position = Vector2(-540, -428)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_iebce")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="3DShapeGenerator" type="Node2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+script = ExtResource("2_oecw1")
+numOfVertexes = 4
