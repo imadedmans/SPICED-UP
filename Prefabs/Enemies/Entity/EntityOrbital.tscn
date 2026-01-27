@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbkrjylnvidf7"]
+
+[ext_resource type="Texture2D" uid="uid://btmew6upsuxit" path="res://Sprites/EntityMain/EntityOrbital.png" id="1_6w04r"]
+[ext_resource type="Script" path="res://Scripts/Enemies/OrbitalPattern.gd" id="1_162hu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ucaq"]
+size = Vector2(14, 14)
+
+[node name="OrbitalParent" type="Node2D"]
+z_index = 2
+scale = Vector2(3, 3)
+script = ExtResource("1_162hu")
+initialRadius = 200.0
+rotateSpeed = 4.0
+decreaseRadiusMultiplier = 50.0
+
+[node name="AnimTimer" type="Timer" parent="."]
+wait_time = 0.05
+autostart = true
+
+[node name="Orb" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+texture = ExtResource("1_6w04r")
+hframes = 4
+vframes = 3
+
+[node name="Area2D" type="Area2D" parent="Orb"]
+visible = false
+z_index = 1
+position = Vector2(-2.08165e-12, -2.08165e-12)
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Orb/Area2D"]
+position = Vector2(1.19209e-07, -6.93883e-13)
+shape = SubResource("RectangleShape2D_3ucaq")
+
+[node name="Orb2" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+texture = ExtResource("1_6w04r")
+hframes = 4
+vframes = 3
+
+[node name="Area2D" type="Area2D" parent="Orb2"]
+visible = false
+z_index = 1
+position = Vector2(-2.08165e-12, -2.08165e-12)
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Orb2/Area2D"]
+position = Vector2(1.19209e-07, -6.93883e-13)
+shape = SubResource("RectangleShape2D_3ucaq")
+
+[node name="Orb3" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+texture = ExtResource("1_6w04r")
+hframes = 4
+vframes = 3
+
+[node name="Area2D" type="Area2D" parent="Orb3"]
+visible = false
+z_index = 1
+position = Vector2(-2.08165e-12, -2.08165e-12)
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Orb3/Area2D"]
+position = Vector2(1.19209e-07, -6.93883e-13)
+shape = SubResource("RectangleShape2D_3ucaq")
+
+[connection signal="timeout" from="AnimTimer" to="." method="_on_anim_timer_timeout"]
+[connection signal="area_entered" from="Orb/Area2D" to="." method="_on_area_entered"]
+[connection signal="area_entered" from="Orb2/Area2D" to="." method="_on_area_entered"]
+[connection signal="area_entered" from="Orb3/Area2D" to="." method="_on_area_entered"]
